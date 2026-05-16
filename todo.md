@@ -59,7 +59,7 @@
 - [x] Null safety for all DB fields
 
 ## Pending / Future
-- [ ] Feature 8: Excalidraw online whiteboard on task page (placeholder shown)
-- [ ] Seed 170+ tasks in DB (currently uses AI generator + fallback bank)
+- [ ] Feature 8: Excalidraw online whiteboard on task page (placeholder shown, future feature)
+- [x] Seed 55 tasks in DB across 5 topics × 3 difficulty levels
 - [ ] PDF export for flashcards
 - [ ] Extended admin panel (variants, homework review, news management)
