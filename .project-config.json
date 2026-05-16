@@ -1,0 +1,43 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "server",
+    "db",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://25skNTmGg1Mvxgn.root:8cq5oD5IqZF9a0ymL5sM@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/RcQecZBizfZCFbaEAhR3RH?ssl={\"rejectUnauthorized\":true}"
+  },
+  "experiments": [
+    "no_db_push"
+  ],
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663667286719/RcQecZBizfZCFbaEAhR3RH",
+    "access_key_id": "ASIAZV3A2ECZMZYEZGSX",
+    "secret_access_key": "4eaJrBgWLp5MpHldspmBYufsS6a7U3Fx3qW6MwZh",
+    "session_token": "IQoJb3JpZ2luX2VjEND//////////wEaCXVzLWVhc3QtMSJIMEYCIQC+1y+KqZH75tn+TJRiyKxWLjcO5QomK5Izg3jDadZ6QwIhAPuLLQLKmJXR9YP+0TT4La99ZeAjIQVXRF83Lhr7kcU4Kv8DCJj//////////wEQBBoMNjY1Mzg2MDk4ODY2Igz4BnDyucVGChwENUMq0wNQNu6Nro/H53kciuzGw9Y8M6/PJr5sMTRkCBTP4F1xapdpTT4ms/wG6A240U4T33Z2yfMcEFcOC4MeUQZ9ToHUw0ok4q5cLrSYjoh/1io6LSunkZDONydWu6yWXA0t3SRfh8H+967Hd4b519jqpsRZ7ece2jhXBtZXzS75C8zecbX4CDN1sRE959figQcgnreUf4xNd0IkKrCFXCCtGTZxXrC2vaIjkxnvCEwbxrTenpjIf5R+zhFgVhmafof9R77FDIcjy4UULvykIJWjkS32V9d3/w9veMI4B8WliEiY0vAdJdg8btCQS4c7sw8Yawz5tGMxqvgg3mdJVNMH4uaF1s5p6OKzh0aVVlL42Fi27r8DniQE5kBYj7qVdYBCRQArWcu5ESzjO7fcbbP0JMy2dytGleqrKNdeZLZFi2SwW+nMNdnO6wrM5rocaXiAq3JtI/EmANBm5zjJY7JJyDsxjAp8190ujKO3ReflsmcDj8vO26uSOL00nkmureFTZbBWbfQf3ipEMMIDzezYskEB7i1wWcbX2oUM8UByoL/N56w2YN3YsB2otevqiRyoyY56ehoSErOslJLCaLVnG0B/u0m0pxEYPllBpBl4HV0ct1BXcjCV96PQBjqcAST8b2Md+2FQPu0q8nIjmpsh//RYc8qualOy21nL5P7y/ClU3BMKbEVhAuA7F3hk3BL4wdFUe903TFNDh4WXbVQv5vFlAc2TPfy5Arif/K1ARh5bMO7AIKY0gzNCRK7UIczINGB0RstmUGfA2K58ic0bqUBFT8muLxeucR+ZqJE0KAUKuszG0L3AQ/L1RWRCc9u32v5uFzxThHYFaA==",
+    "expiration": "2026-05-17T11:19:49.000Z"
+  },
+  "name": "samurai-path",
+  "path": "/home/ubuntu/samurai-path",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "h7vFdxshKTSgUoBYVkgcsh",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "d3SwcQuBaiUUmUYKMtU7BR",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Матвей Дубовчук",
+    "OWNER_OPEN_ID": "EoxSyornnrGxgDuXkjXM5W",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "a89d4d56-e0c5-4281-8728-8d7862e0e991",
+    "VITE_APP_ID": "RcQecZBizfZCFbaEAhR3RH",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "Путь самурая",
+    "VITE_FRONTEND_FORGE_API_KEY": "8LsCghzVBZy3m8hdQswdn9",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-db-user",
+  "test_command": "pnpm test"
+}
