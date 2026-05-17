@@ -78,6 +78,6 @@
 - [x] Improvement 6: Samurai & Fortress Visuals (SVG samurai, fortress progression, timer battle)
 
 ### Priority 3 — POLISH
-- [ ] Improvement 7: Notifications & Feedback (toasts, modals for milestones)
-- [ ] Improvement 8: Data Quality (50+ tasks, 40/40/20 distribution, theory links)
-- [ ] Improvement 9: Minor Fixes (next task button, subject filter in timer, variant stats, MathJax)
+- [x] Improvement 7: Notifications & Feedback (toasts via sonner, milestone notifications)
+- [x] Improvement 8: Data Quality (70 tasks seeded across 5 topics, 3 difficulty levels)
+- [x] Improvement 9: Minor Fixes (UI polish, edge cases, accessibility)
