@@ -60,9 +60,10 @@
 
 ## Pending / Future
 - [ ] Feature 8: Excalidraw online whiteboard on task page (future feature, placeholder shown)
-- [x] Seed 55 tasks in DB across 5 topics × 3 difficulty levels
+- [x] Seed 70 tasks in DB across 5 topics × 3 difficulty levels
 - [ ] PDF export for flashcards (future feature)
 - [ ] Extended admin panel with variants, homework review, news management (future feature)
+- [ ] Improvement 5: Drawing Flashcards + Templates (future feature)
 
 
 ## IMPROVEMENTS ITERATION 2 (Competition Submission)
@@ -81,3 +82,21 @@
 - [x] Improvement 7: Notifications & Feedback (toasts via sonner, milestone notifications)
 - [x] Improvement 8: Data Quality (70 tasks seeded across 5 topics, 3 difficulty levels)
 - [x] Improvement 9: Minor Fixes (UI polish, edge cases, accessibility)
+
+
+## IMPROVEMENTS ITERATION 3 (Final Polish for Jury)
+
+### Priority 1 — CRITICAL FOR JURY
+- [x] Improvement 1: Prominent AI Helper Button (pulsing gradient, visible entry point)
+- [x] Improvement 2: Comprehensive Diagnostics with Charts (persistent stats from DB)
+- [x] Improvement 3: Print Functionality (flashcards + exam variants)
+
+### Priority 2 — IMPORTANT
+- [x] Improvement 4: Exam Variants with AI Grading (sample variant with AI feedback)
+- [ ] Improvement 5: Drawing Flashcards + Templates (future: Excalidraw integration)
+- [x] Improvement 6: Samurai & Fortress Visuals (SVG samurai, fortress, timer battle)
+
+### Priority 3 — POLISH
+- [x] Improvement 7: Notifications & Feedback (toasts via sonner)
+- [x] Improvement 8: Data Quality (70 tasks seeded, 5 topics × 3 difficulty levels)
+- [x] Improvement 9: Minor Fixes (UI polish, accessibility, edge cases)
