@@ -59,7 +59,25 @@
 - [x] Null safety for all DB fields
 
 ## Pending / Future
-- [ ] Feature 8: Excalidraw online whiteboard on task page (placeholder shown, future feature)
+- [ ] Feature 8: Excalidraw online whiteboard on task page (future feature, placeholder shown)
 - [x] Seed 55 tasks in DB across 5 topics × 3 difficulty levels
-- [ ] PDF export for flashcards
-- [ ] Extended admin panel (variants, homework review, news management)
+- [ ] PDF export for flashcards (future feature)
+- [ ] Extended admin panel with variants, homework review, news management (future feature)
+
+
+## IMPROVEMENTS ITERATION 2 (Competition Submission)
+
+### Priority 1 — CRITICAL FOR JURY
+- [x] Improvement 1: AI Helper Button (visible entry point to Socratic mode)
+- [x] Improvement 2: Diagnostics with Full Statistics (persistent stats from DB, updated after each task)
+- [x] Improvement 3: Print Functionality (flashcards + exam variants)
+
+### Priority 2 — IMPORTANT
+- [x] Improvement 4: Exam Variants with AI Grading (sample variant with AI scoring feedback)
+- [ ] Improvement 5: Drawing Flashcards + Templates (future feature)
+- [x] Improvement 6: Samurai & Fortress Visuals (SVG samurai, fortress progression, timer battle)
+
+### Priority 3 — POLISH
+- [ ] Improvement 7: Notifications & Feedback (toasts, modals for milestones)
+- [ ] Improvement 8: Data Quality (50+ tasks, 40/40/20 distribution, theory links)
+- [ ] Improvement 9: Minor Fixes (next task button, subject filter in timer, variant stats, MathJax)

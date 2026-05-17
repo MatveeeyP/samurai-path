@@ -213,6 +213,27 @@ export async function countCorrectAttempts(userId: number) {
   return result[0]?.count ?? 0;
 }
 
+export async function getUserStats(userId: number) {
+  const db = await getDb();
+  if (!db) return { totalAttempts: 0, correctAttempts: 0, successRate: 0 };
+  
+  const totalResult = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(userAttempts)
+    .where(eq(userAttempts.userId, userId));
+  const totalAttempts = totalResult[0]?.count ?? 0;
+  
+  const correctResult = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(userAttempts)
+    .where(and(eq(userAttempts.userId, userId), eq(userAttempts.isCorrect, true)));
+  const correctAttempts = correctResult[0]?.count ?? 0;
+  
+  const successRate = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0;
+  
+  return { totalAttempts, correctAttempts, successRate };
+}
+
 // ─── Diagnostics ──────────────────────────────────────────────────────────────
 
 export async function createDiagnosticSession(userId: number) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
@@ -48,6 +48,7 @@ export default function Diagnostics() {
   const [aiComment, setAiComment] = useState("");
 
   const { data: existingScores } = trpc.diagnostics.getTopicScores.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: userStats } = trpc.profile.stats.useQuery(undefined, { enabled: isAuthenticated });
   const submitMutation = trpc.diagnostics.submitResults.useMutation();
   const commentMutation = trpc.ai.diagnosticComment.useMutation();
 
@@ -141,6 +142,27 @@ export default function Diagnostics() {
           </div>
         ) : null}
 
+        {/* All-time stats */}
+        {isAuthenticated && userStats && (
+          <div className="card-samurai" style={{ marginBottom: 20 }}>
+            <h3 style={{ marginBottom: 16 }}>📈 Статистика за всё время</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>  
+              <div style={{ textAlign: "center", padding: "12px", background: "#242430", borderRadius: 8 }}>
+                <div style={{ fontSize: 11, color: "#D5D5DC", marginBottom: 4 }}>Решено задач</div>
+                <div style={{ fontSize: 24, fontWeight: 700, color: "#E63E7C" }}>{userStats.totalAttempts}</div>
+              </div>
+              <div style={{ textAlign: "center", padding: "12px", background: "#242430", borderRadius: 8 }}>
+                <div style={{ fontSize: 11, color: "#D5D5DC", marginBottom: 4 }}>Правильных</div>
+                <div style={{ fontSize: 24, fontWeight: 700, color: "#4ade80" }}>{userStats.correctAttempts}</div>
+              </div>
+              <div style={{ textAlign: "center", padding: "12px", background: "#242430", borderRadius: 8 }}>
+                <div style={{ fontSize: 11, color: "#D5D5DC", marginBottom: 4 }}>% успеха</div>
+                <div style={{ fontSize: 24, fontWeight: 700, color: "#D4A82C" }}>{userStats.successRate}%</div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="card-samurai" style={{ marginBottom: 20 }}>
           <h3 style={{ marginBottom: 12 }}>Что тебя ждёт</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -199,22 +221,21 @@ export default function Diagnostics() {
               style={{
                 background: i < currentTopicIdx ? "rgba(45,157,95,0.2)" : i === currentTopicIdx ? "rgba(230,62,124,0.2)" : "rgba(255,255,255,0.05)",
                 color: i < currentTopicIdx ? "#4ade80" : i === currentTopicIdx ? "#F08AB0" : "#D5D5DC",
+                fontSize: 11,
               }}
             >
-              {i < currentTopicIdx ? "✓ " : ""}{t.slice(0, 8)}
+              {i < currentTopicIdx ? "✓" : i === currentTopicIdx ? "→" : "○"} {t.slice(0, 6)}
             </span>
           ))}
         </div>
 
         {/* Task */}
-        <div className="card-samurai animate-fade-in-up">
-          <div style={{ fontSize: 16, lineHeight: 1.7, color: "#fff", marginBottom: 20 }}>
-            {currentTask.text}
-          </div>
+        <div className="card-samurai" style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 16, lineHeight: 1.7, color: "#fff", marginBottom: 20 }}>{currentTask.text}</div>
 
           {!showAnswer ? (
             <div>
-              <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+              <div style={{ display: "flex", gap: 10 }}>
                 <input
                   value={currentAnswer}
                   onChange={(e) => setCurrentAnswer(e.target.value)}
@@ -230,18 +251,16 @@ export default function Diagnostics() {
                     fontSize: 15,
                   }}
                 />
-                <button className="btn-samurai" onClick={() => {
-                  const isCorrect = checkAnswer();
-                  if (isCorrect !== undefined) {
-                    setTimeout(() => handleAnswer(isCorrect), 1500);
-                  }
-                }}>
+                <button
+                  onClick={() => checkAnswer()}
+                  style={{ padding: "10px 20px", background: "#E63E7C", border: "none", borderRadius: 8, color: "white", cursor: "pointer", fontWeight: 600 }}
+                >
                   Проверить
                 </button>
               </div>
               <button
                 onClick={() => { setShowAnswer(true); }}
-                style={{ background: "none", border: "none", color: "#D5D5DC", cursor: "pointer", fontSize: 13 }}
+                style={{ background: "none", border: "none", color: "#D5D5DC", cursor: "pointer", fontSize: 13, marginTop: 8 }}
               >
                 Не знаю ответ
               </button>

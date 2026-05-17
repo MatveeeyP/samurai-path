@@ -1,6 +1,6 @@
 import { z } from "zod/v4";
 import { protectedProcedure, router } from "../_core/trpc";
-import { updateUserProfile, countCorrectAttempts, getWarrior, getTopicScores } from "../db";
+import { updateUserProfile, countCorrectAttempts, getWarrior, getTopicScores, getUserStats } from "../db";
 
 export const profileRouter = router({
   update: protectedProcedure
@@ -23,12 +23,13 @@ export const profileRouter = router({
     }),
 
   stats: protectedProcedure.query(async ({ ctx }) => {
-    const [solvedCount, warrior, topicScores] = await Promise.all([
+    const [solvedCount, warrior, topicScores, allStats] = await Promise.all([
       countCorrectAttempts(ctx.user.id),
       getWarrior(ctx.user.id),
       getTopicScores(ctx.user.id),
+      getUserStats(ctx.user.id),
     ]);
 
-    return { solvedCount, warrior, topicScores };
+    return { solvedCount, warrior, topicScores, totalAttempts: allStats.totalAttempts, correctAttempts: allStats.correctAttempts, successRate: allStats.successRate };
   }),
 });

@@ -48,24 +48,54 @@ export default function Variants() {
   if (activeVariant) {
     return (
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
           <div>
             <h1 style={{ marginBottom: 4 }}>{activeVariant.title}</h1>
             <p style={{ color: "#D5D5DC" }}>{activeVariant.tasks.length} заданий</p>
           </div>
-          <button
-            onClick={() => { setActiveVariant(null); setAnswers({}); setSubmitted(false); setResults(null); }}
-            style={{ background: "none", border: "1px solid #33333D", borderRadius: 8, padding: "8px 16px", color: "#D5D5DC", cursor: "pointer" }}
-          >
-            ← Назад
-          </button>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              onClick={() => window.print()}
+              style={{ background: "none", border: "1px solid #33333D", borderRadius: 8, padding: "8px 16px", color: "#D5D5DC", cursor: "pointer", transition: "all 150ms" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(230,62,124,0.1)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+            >
+              🗸️ Печать
+            </button>
+            <button
+              onClick={() => { setActiveVariant(null); setAnswers({}); setSubmitted(false); setResults(null); }}
+              style={{ background: "none", border: "1px solid #33333D", borderRadius: 8, padding: "8px 16px", color: "#D5D5DC", cursor: "pointer" }}
+            >
+              ← Назад
+            </button>
+          </div>
         </div>
 
         {results && (
-          <div className="card-samurai animate-fade-in-up" style={{ marginBottom: 20, textAlign: "center" }}>
-            <div style={{ fontSize: 12, color: "#D5D5DC", marginBottom: 8, fontFamily: "Cinzel, serif" }}>РЕЗУЛЬТАТ</div>
-            <div className="stat-number" style={{ fontSize: 56 }}>{results.score}</div>
-            <div style={{ fontSize: 16, color: "#D5D5DC" }}>баллов · {results.correct}/{results.total} верных</div>
+          <div className="card-samurai animate-fade-in-up" style={{ marginBottom: 20 }}>
+            <div style={{ textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 12, color: "#D5D5DC", marginBottom: 8, fontFamily: "Cinzel, serif" }}>РЕЗУЛЬТАТ</div>
+              <div className="stat-number" style={{ fontSize: 56 }}>{results.score}</div>
+              <div style={{ fontSize: 16, color: "#D5D5DC" }}>баллов · {results.correct}/{results.total} верных</div>
+            </div>
+            {results.score >= 80 && (
+              <div style={{ padding: 12, background: "rgba(45,157,95,0.15)", borderRadius: 8, borderLeft: "3px solid #2D9D5F" }}>
+                <div style={{ fontSize: 12, color: "#4ade80", fontWeight: 600, marginBottom: 4 }}>✓ ОТЛИЧНЫЙ РЕЗУЛЬТАТ</div>
+                <p style={{ fontSize: 13, color: "#D5D5DC", margin: 0 }}>Ты хорошо подготовлен! Продолжай в том же духе и не забывай про сложные темы.</p>
+              </div>
+            )}
+            {results.score >= 60 && results.score < 80 && (
+              <div style={{ padding: 12, background: "rgba(212,168,44,0.15)", borderRadius: 8, borderLeft: "3px solid #D4A82C" }}>
+                <div style={{ fontSize: 12, color: "#fbbf24", fontWeight: 600, marginBottom: 4 }}>⚡ ХОРОШИЙ РЕЗУЛЬТАТ</div>
+                <p style={{ fontSize: 13, color: "#D5D5DC", margin: 0 }}>Ты на правильном пути! Сосредоточься на темах с низким процентом и повтори формулы.</p>
+              </div>
+            )}
+            {results.score < 60 && (
+              <div style={{ padding: 12, background: "rgba(230,62,124,0.15)", borderRadius: 8, borderLeft: "3px solid #E63E7C" }}>
+                <div style={{ fontSize: 12, color: "#E63E7C", fontWeight: 600, marginBottom: 4 }}>⚠️ НУЖНА РАБОТА</div>
+                <p style={{ fontSize: 13, color: "#D5D5DC", margin: 0 }}>Не отчаивайся! Пройди диагностику, чтобы найти пробелы, и начни с основ.</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -168,42 +198,6 @@ export default function Variants() {
             ⚔️ Начать вариант
           </button>
         </div>
-
-        {/* More variants from DB */}
-        {variants?.map((v) => (
-          <div key={v.id} className="card-samurai">
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-              <span className="badge-samurai badge-pink">ЕГЭ</span>
-              <span className="badge-samurai badge-blue">{v.type ?? "custom"}</span>
-            </div>
-            <h3 style={{ marginBottom: 8 }}>{v.title}</h3>
-            <p style={{ fontSize: 13, color: "#D5D5DC", marginBottom: 12 }}>
-              {Array.isArray(v.taskIds) ? (v.taskIds as number[]).length : 0} заданий
-            </p>
-            <button
-              className="btn-samurai"
-              style={{ width: "100%", fontSize: 14 }}
-              onClick={() => toast.info("Полные варианты скоро появятся!")}
-            >
-              ⚔️ Начать
-            </button>
-          </div>
-        ))}
-
-        {/* Coming soon */}
-        {[2, 3].map((i) => (
-          <div key={i} className="card-samurai" style={{ opacity: 0.5 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-              <span className="badge-samurai badge-pink">ЕГЭ</span>
-              <span className="badge-samurai badge-blue">2024</span>
-            </div>
-            <h3 style={{ marginBottom: 8 }}>Вариант №{i + 1}</h3>
-            <p style={{ fontSize: 13, color: "#D5D5DC", marginBottom: 12 }}>Скоро</p>
-            <button className="btn-samurai" style={{ width: "100%", fontSize: 14 }} disabled>
-              Скоро
-            </button>
-          </div>
-        ))}
       </div>
     </div>
   );

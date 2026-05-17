@@ -214,6 +214,23 @@ export default function Flashcards() {
             <button className="btn-samurai" onClick={startStudy} style={{ fontSize: 14 }}>
               ⚔️ Начать изучение ({allCards.length} карточек)
             </button>
+            <button
+              onClick={() => window.print()}
+              style={{
+                padding: "10px 16px",
+                background: "transparent",
+                border: "1px solid #33333D",
+                borderRadius: 8,
+                color: "#D5D5DC",
+                cursor: "pointer",
+                fontSize: 14,
+                transition: "all 150ms",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(230,62,124,0.1)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+            >
+              🗸️ Распечатать
+            </button>
           </div>
 
           {/* Cards grid */}

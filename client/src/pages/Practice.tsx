@@ -196,7 +196,22 @@ export default function Practice() {
                         )}
                       </div>
                     </div>
-                    <div style={{ color: "#E63E7C", fontSize: 20 }}>→</div>
+                    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                      <div
+                        title="Здесь поможет AI"
+                        style={{
+                          fontSize: 18,
+                          cursor: "pointer",
+                          opacity: 0.7,
+                          transition: "opacity 150ms",
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+                        onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
+                      >
+                        ⚔️
+                      </div>
+                      <div style={{ color: "#E63E7C", fontSize: 20 }}>→</div>
+                    </div>
                   </div>
                 </div>
               ))}

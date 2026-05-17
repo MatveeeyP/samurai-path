@@ -150,6 +150,37 @@ export default function TaskDetail() {
               {task.text}
             </div>
 
+            {/* AI Helper Button */}
+            <div style={{ marginBottom: 20 }}>
+              <button
+                onClick={() => startSocratic()}
+                style={{
+                  width: "100%",
+                  padding: "16px 20px",
+                  background: "linear-gradient(135deg, #E63E7C 0%, #B5135A 100%)",
+                  border: "none",
+                  borderRadius: 10,
+                  color: "white",
+                  fontSize: 16,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  animation: "pulse 2s infinite",
+                  transition: "transform 150ms",
+                }}
+                onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.97)")}
+                onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              >
+                ⚔️ Спросить AI-Самурая
+              </button>
+              <p style={{ fontSize: 13, color: "#D5D5DC", marginTop: 8, fontStyle: "italic", textAlign: "center" }}>
+                AI найдёт первую ошибку и подскажет, не выдавая готового ответа
+              </p>
+            </div>
+
             {/* Answer input */}
             {!submitted ? (
               <div>
