@@ -2,6 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useAuth } from "@/_core/hooks/useAuth";
+import DrawingFlashcardCreator from "@/components/DrawingFlashcardCreator";
 
 const SYSTEM_CARDS = [
   { front: "Формула дискриминанта", back: "D = b² - 4ac", topic: "Алгебра" },
@@ -24,11 +25,11 @@ const SYSTEM_CARDS = [
   { front: "Формула корней квадратного уравнения", back: "x = (-b ± √D) / 2a", topic: "Алгебра" },
 ];
 
-type Card = { id: number; front: string; back: string; topic?: string | null; repetitionCount?: number | null; easeFactor?: number | null };
+type Card = { id: number; front: string; back: string; topic?: string | null; repetitionCount?: number | null; easeFactor?: number | null; cardType?: string | null; frontDrawing?: string | null; backDrawing?: string | null; template?: string | null; };
 
 export default function Flashcards() {
   const { isAuthenticated } = useAuth();
-  const [mode, setMode] = useState<"browse" | "study" | "create">("browse");
+  const [mode, setMode] = useState<"browse" | "study" | "create" | "draw">("browse");
   const [currentIdx, setCurrentIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [filterTopic, setFilterTopic] = useState("");
@@ -90,14 +91,15 @@ export default function Flashcards() {
       </div>
 
       {/* Mode tabs */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 20, background: "#1A1A22", borderRadius: 10, padding: 4, width: "fit-content" }}>
+      <div style={{ display: "flex", gap: 4, marginBottom: 20, background: "#1A1A22", borderRadius: 10, padding: 4, width: "fit-content", overflowX: "auto" }}>
         {[
           { key: "browse", label: "📚 Все карточки" },
-          { key: "create", label: "✏️ Создать" },
+          { key: "create", label: "✏️ Текст" },
+          { key: "draw", label: "🎨 Рисунок" },
         ].map((tab) => (
           <button
             key={tab.key}
-            onClick={() => setMode(tab.key as "browse" | "create")}
+            onClick={() => setMode(tab.key as "browse" | "create" | "draw")}
             style={{
               padding: "8px 20px",
               borderRadius: 8,
@@ -108,6 +110,7 @@ export default function Flashcards() {
               transition: "all 150ms",
               background: mode === tab.key ? "linear-gradient(135deg, #E63E7C, #B5135A)" : "transparent",
               color: mode === tab.key ? "white" : "#D5D5DC",
+              whiteSpace: "nowrap",
             }}
           >
             {tab.label}
@@ -147,10 +150,16 @@ export default function Flashcards() {
             }}
           >
             <div style={{ fontSize: 12, color: "#D5D5DC", marginBottom: 16, fontFamily: "Cinzel, serif" }}>
-              {flipped ? "ОТВЕТ" : "ВОПРОС"}
+              {currentCard.cardType === "drawing" ? (flipped ? "РИСУНОК ОТВЕТА" : "РИСУНОК ВОПРОСА") : (flipped ? "ОТВЕТ" : "ВОПРОС")}
             </div>
             <div style={{ fontSize: flipped ? 28 : 18, color: flipped ? "#E63E7C" : "#fff", fontWeight: flipped ? 700 : 400, lineHeight: 1.5 }}>
-              {flipped ? currentCard.back : currentCard.front}
+              {currentCard.cardType === "drawing" ? (
+                <div style={{ fontSize: 14, color: "#D5D5DC", fontStyle: "italic" }}>
+                  {flipped ? "[Рисунок ответа]" : `[Рисунок вопроса - шаблон: ${currentCard.template}]`}
+                </div>
+              ) : (
+                flipped ? currentCard.back : currentCard.front
+              )}
             </div>
             {!flipped && (
               <div style={{ fontSize: 12, color: "#D5D5DC", marginTop: 16 }}>Нажми, чтобы увидеть ответ</div>
@@ -246,17 +255,39 @@ export default function Flashcards() {
                   {card.id < 0 && <span className="badge-samurai badge-blue" style={{ marginLeft: 6, fontSize: 10 }}>Система</span>}
                   {card.id > 0 && <span className="badge-samurai badge-green" style={{ marginLeft: 6, fontSize: 10 }}>Моя</span>}
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", marginBottom: 8 }}>{card.front}</div>
-                <div style={{ fontSize: 13, color: "#E63E7C" }}>{card.back}</div>
+                {card.cardType === "drawing" && card.frontDrawing ? (
+                  <div style={{ fontSize: 12, color: "#D5D5DC", marginBottom: 8, fontStyle: "italic" }}>Рисунок (шаблон: {card.template})</div>
+                ) : (
+                  <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", marginBottom: 8 }}>{card.front}</div>
+                )}
+                <div style={{ fontSize: 13, color: "#E63E7C" }}>{card.cardType === "drawing" ? "[Рисунок на обороте]" : card.back}</div>
               </div>
             ))}
           </div>
         </div>
+      ) : mode === "draw" ? (
+        <DrawingFlashcardCreator
+          onCreateCard={(card) => {
+            if (isAuthenticated) {
+              createMutation.mutate({
+                front: card.front,
+                back: card.back,
+                topic: card.topic,
+                cardType: card.cardType,
+                frontDrawing: card.frontDrawing,
+                backDrawing: card.backDrawing,
+                template: card.template,
+              });
+            } else {
+              toast.error("Войдите, чтобы сохранять карточки");
+            }
+          }}
+        />
       ) : (
-        /* Create */
+        /* Create Text */
         <div style={{ maxWidth: 500 }}>
           <div className="card-samurai">
-            <h3 style={{ marginBottom: 16 }}>✏️ Новая карточка</h3>
+            <h3 style={{ marginBottom: 16 }}>✏️ Новая текстовая карточка</h3>
             <div style={{ marginBottom: 12 }}>
               <label style={{ fontSize: 13, color: "#D5D5DC", display: "block", marginBottom: 6 }}>Вопрос / Понятие</label>
               <textarea

@@ -15,6 +15,13 @@
       "when": 1778973688468,
       "tag": "0001_cynical_microchip",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1779060668876,
+      "tag": "0002_yellow_ultimo",
+      "breakpoints": true
     }
   ]
 }

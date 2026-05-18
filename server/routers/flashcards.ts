@@ -45,6 +45,10 @@ export const flashcardsRouter = router({
         front: z.string(),
         back: z.string(),
         topic: z.string().optional(),
+        cardType: z.enum(["text", "drawing"]).default("text"),
+        frontDrawing: z.string().optional(),
+        backDrawing: z.string().optional(),
+        template: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -53,6 +57,10 @@ export const flashcardsRouter = router({
         front: input.front,
         back: input.back,
         topic: input.topic,
+        cardType: input.cardType,
+        frontDrawing: input.frontDrawing,
+        backDrawing: input.backDrawing,
+        template: input.template,
         isCustom: true,
       });
       return { success: true };

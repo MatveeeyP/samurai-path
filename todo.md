@@ -93,7 +93,7 @@
 
 ### Priority 2 — IMPORTANT
 - [x] Improvement 4: Exam Variants with AI Grading (sample variant with AI feedback)
-- [ ] Improvement 5: Drawing Flashcards + Templates (future: Excalidraw integration)
+- [x] Improvement 5: Drawing Flashcards + Templates (Excalidraw with 5 templates)
 - [x] Improvement 6: Samurai & Fortress Visuals (SVG samurai, fortress, timer battle)
 
 ### Priority 3 — POLISH

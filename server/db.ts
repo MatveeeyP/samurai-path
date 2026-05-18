@@ -364,11 +364,26 @@ export async function insertFlashcard(data: {
   front: string;
   back: string;
   topic?: string;
+  cardType?: string;
+  frontDrawing?: string;
+  backDrawing?: string;
+  template?: string;
   isCustom?: boolean;
 }) {
   const db = await getDb();
   if (!db) return null;
-  return db.insert(flashcards).values(data);
+  const values: any = {
+    userId: data.userId,
+    front: data.front,
+    back: data.back,
+    topic: data.topic,
+    cardType: (data.cardType as 'text' | 'drawing') || 'text',
+    frontDrawing: data.frontDrawing,
+    backDrawing: data.backDrawing,
+    template: data.template,
+    isCustom: data.isCustom,
+  };
+  return db.insert(flashcards).values(values);
 }
 
 export async function updateFlashcardSM2(
