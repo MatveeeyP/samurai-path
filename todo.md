@@ -63,7 +63,6 @@
 - [x] Seed 70 tasks in DB across 5 topics × 3 difficulty levels
 - [ ] PDF export for flashcards (future feature)
 - [ ] Extended admin panel with variants, homework review, news management (future feature)
-- [ ] Improvement 5: Drawing Flashcards + Templates (future feature)
 
 
 ## IMPROVEMENTS ITERATION 2 (Competition Submission)
@@ -75,7 +74,7 @@
 
 ### Priority 2 — IMPORTANT
 - [x] Improvement 4: Exam Variants with AI Grading (sample variant with AI scoring feedback)
-- [ ] Improvement 5: Drawing Flashcards + Templates (future feature)
+- [x] Improvement 5: Drawing Flashcards + Templates (Excalidraw with 5 templates)
 - [x] Improvement 6: Samurai & Fortress Visuals (SVG samurai, fortress progression, timer battle)
 
 ### Priority 3 — POLISH

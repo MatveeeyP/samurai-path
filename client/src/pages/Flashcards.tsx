@@ -3,6 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useAuth } from "@/_core/hooks/useAuth";
 import DrawingFlashcardCreator from "@/components/DrawingFlashcardCreator";
+import DrawingFlashcardViewer from "@/components/DrawingFlashcardViewer";
 
 const SYSTEM_CARDS = [
   { front: "Формула дискриминанта", back: "D = b² - 4ac", topic: "Алгебра" },
@@ -150,13 +151,15 @@ export default function Flashcards() {
             }}
           >
             <div style={{ fontSize: 12, color: "#D5D5DC", marginBottom: 16, fontFamily: "Cinzel, serif" }}>
-              {currentCard.cardType === "drawing" ? (flipped ? "РИСУНОК ОТВЕТА" : "РИСУНОК ВОПРОСА") : (flipped ? "ОТВЕТ" : "ВОПРОС")}
+              {currentCard.cardType === "drawing" ? (flipped ? "🎨 РИСУНОК ОТВЕТА" : "🎨 РИСУНОК ВОПРОСА") : (flipped ? "ОТВЕТ" : "ВОПРОС")}
             </div>
-            <div style={{ fontSize: flipped ? 28 : 18, color: flipped ? "#E63E7C" : "#fff", fontWeight: flipped ? 700 : 400, lineHeight: 1.5 }}>
+            <div style={{ fontSize: flipped ? 28 : 18, color: flipped ? "#E63E7C" : "#fff", fontWeight: flipped ? 700 : 400, lineHeight: 1.5, minHeight: 100 }}>
               {currentCard.cardType === "drawing" ? (
-                <div style={{ fontSize: 14, color: "#D5D5DC", fontStyle: "italic" }}>
-                  {flipped ? "[Рисунок ответа]" : `[Рисунок вопроса - шаблон: ${currentCard.template}]`}
-                </div>
+                <DrawingFlashcardViewer 
+                  drawingData={flipped ? currentCard.backDrawing : currentCard.frontDrawing} 
+                  template={currentCard.template}
+                  readOnly 
+                />
               ) : (
                 flipped ? currentCard.back : currentCard.front
               )}
@@ -256,11 +259,14 @@ export default function Flashcards() {
                   {card.id > 0 && <span className="badge-samurai badge-green" style={{ marginLeft: 6, fontSize: 10 }}>Моя</span>}
                 </div>
                 {card.cardType === "drawing" && card.frontDrawing ? (
-                  <div style={{ fontSize: 12, color: "#D5D5DC", marginBottom: 8, fontStyle: "italic" }}>Рисунок (шаблон: {card.template})</div>
+                  <div style={{ fontSize: 12, color: "#D5D5DC", marginBottom: 8 }}>
+                    <div style={{ marginBottom: 8 }}>🎨 Рисунок (шаблон: {card.template})</div>
+                    <DrawingFlashcardViewer drawingData={card.frontDrawing} template={card.template} readOnly />
+                  </div>
                 ) : (
                   <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", marginBottom: 8 }}>{card.front}</div>
                 )}
-                <div style={{ fontSize: 13, color: "#E63E7C" }}>{card.cardType === "drawing" ? "[Рисунок на обороте]" : card.back}</div>
+                <div style={{ fontSize: 13, color: "#E63E7C", marginTop: 8 }}>{card.cardType === "drawing" ? "🎨 [Рисунок на обороте]" : card.back}</div>
               </div>
             ))}
           </div>
