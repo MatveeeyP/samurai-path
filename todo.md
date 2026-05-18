@@ -58,8 +58,8 @@
 - [x] Auth guards on protected queries
 - [x] Null safety for all DB fields
 
-## Pending / Future
-- [ ] Feature 8: Excalidraw online whiteboard on task page (future feature, placeholder shown)
+## Pending / Future (Not Required for Jury)
+- [ ] Feature 8: Excalidraw online whiteboard on task page (future feature)
 - [x] Seed 70 tasks in DB across 5 topics × 3 difficulty levels
 - [ ] PDF export for flashcards (future feature)
 - [ ] Extended admin panel with variants, homework review, news management (future feature)
