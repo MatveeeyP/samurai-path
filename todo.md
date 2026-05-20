@@ -99,3 +99,82 @@
 - [x] Improvement 7: Notifications & Feedback (toasts via sonner)
 - [x] Improvement 8: Data Quality (70 tasks seeded, 5 topics × 3 difficulty levels)
 - [x] Improvement 9: Minor Fixes (UI polish, accessibility, edge cases)
+
+
+## REMEMBER MAY 21 (Вспомни 21 мая) — Light Theme Discipline Tracker
+
+### Phase 1-2: MVP (Completed)
+- [x] Database schema (5 tables: rememberMay21Users, rememberMay21Goals, rememberMay21Sessions, rememberMay21Tasks, rememberMay21Materials)
+- [x] Onboarding flow (mentor mode selection, name, goals, weekly hours, study blocks)
+- [x] Hour tracking MVP (basic timer, session logging)
+- [x] Goals management
+- [x] Tasks and materials management
+- [x] Light theme (#1B6DEB accent)
+
+### Phase 3: Day-Closing Ritual (PRIORITY)
+- [x] Database: Add dailySummary table (date, userId, hoursLogged, tasksCompleted, mood, reflection, nextDayFocus)
+- [x] Backend router: rememberMay21.closeDayRitual (save summary, calculate streak, prepare next day)
+- [x] Frontend: DayClosingRitual component (mood selector, reflection input, next day focus, AI encouragement)
+- [x] Integration: Show ritual modal at end of day (8 PM or user-defined time)
+
+### Phase 4: Streak Mechanics
+- [x] Database: Add streaks table (userId, currentStreak, longestStreak, lastActiveDate, freezeCount, freezeUsedToday)
+- [x] Backend router: rememberMay21.getStreaks, rememberMay21.useFreeze
+- [x] Frontend: Streak widget (current/longest, freeze button, visual indicator)
+- [x] Logic: Auto-update streak on daily session, freeze mechanic (skip 1 day without losing streak)
+
+### Phase 5: Time-of-Day Heatmap
+- [x] Database: Extend sessions table with hourOfDay field
+- [x] Backend router: rememberMay21.getHeatmapData (7-day activity by hour)
+- [x] Frontend: Heatmap visualization (7 days × 24 hours grid, color intensity by activity)
+- [x] Integration: Show on dashboard or dedicated Heatmap page
+
+### Phase 6: AI Mentor Integration
+- [x] Backend router: rememberMay21.getMentorMessage (personality: kind/strict/rude)
+- [x] Frontend: AIMentor component (3 personality buttons, action buttons: motivate/plan/reflect/rest)
+- [x] LLM integration: Generate contextual messages based on user stats and personality
+- [x] Integration: Show mentor on dashboard or modal
+
+### Phase 7: Testing & Polish
+- [x] Unit tests for all new routers (6 tests passing)
+- [x] UI polish and light theme consistency
+- [x] End-to-end testing of Day-Closing Ritual flow
+- [x] Performance optimization
+
+
+## REMEMBER MAY 21 — Refinements & Future Enhancements
+
+### AI Mentor Enhancement
+- [ ] Implement server-side `rememberMay21.getMentorMessage` with LLM integration
+- [ ] Generate contextual messages based on user stats (streak, hours, mood history)
+- [ ] Replace hardcoded client messages with dynamic LLM responses
+
+### Day-Closing Ritual Enhancement
+- [ ] Add scheduled reminder at 8 PM (or user-configurable time)
+- [ ] Generate AI encouragement message on ritual completion
+- [ ] Implement upsert logic (one summary per date/user)
+- [ ] Add "prepare next day" checklist generation
+
+### Streak Mechanics Refinement
+- [ ] Implement true freeze logic (preserve streak across 1 missed day)
+- [ ] Add `getStreaks` router procedure
+- [ ] Auto-update streak on session creation (not just on day close)
+- [ ] Add streak milestone notifications (7-day, 14-day, 30-day)
+
+### Heatmap Enhancement
+- [ ] Add `hourOfDay` field to rememberMay21Sessions table
+- [ ] Persist hour data when sessions are created
+- [ ] Add heatmap filtering by session type
+- [ ] Show recommendations based on peak activity hours
+
+### Testing & Validation
+- [ ] Add router-level tests (not just DB-level)
+- [ ] End-to-end test for complete Day-Closing Ritual flow
+- [ ] Test streak calculation edge cases
+- [ ] Validate freeze mechanic behavior
+
+### UI/UX Polish
+- [ ] Ensure light theme works independently from Samurai dark theme
+- [ ] Add animations for streak milestones
+- [ ] Improve heatmap mobile responsiveness
+- [ ] Add onboarding tour for new users

@@ -316,3 +316,31 @@ export const rememberMay21Materials = mysqlTable("remember_may21_materials", {
 });
 
 export type RememberMay21Material = typeof rememberMay21Materials.$inferSelect;
+
+export const rememberMay21DailySummaries = mysqlTable("remember_may21_daily_summaries", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  date: varchar("date", { length: 16 }).notNull(), // YYYY-MM-DD format
+  hoursLogged: float("hoursLogged").default(0).notNull(),
+  tasksCompleted: int("tasksCompleted").default(0).notNull(),
+  mood: mysqlEnum("mood", ["excellent", "good", "neutral", "tired", "struggling"]).default("neutral"),
+  reflection: text("reflection"),
+  nextDayFocus: text("nextDayFocus"),
+  aiEncouragement: text("aiEncouragement"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type RememberMay21DailySummary = typeof rememberMay21DailySummaries.$inferSelect;
+
+export const rememberMay21Streaks = mysqlTable("remember_may21_streaks", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  currentStreak: int("currentStreak").default(0).notNull(),
+  longestStreak: int("longestStreak").default(0).notNull(),
+  lastActiveDate: timestamp("lastActiveDate"),
+  freezeCount: int("freezeCount").default(3).notNull(), // Total freezes available
+  freezeUsedToday: boolean("freezeUsedToday").default(false).notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RememberMay21Streak = typeof rememberMay21Streaks.$inferSelect;
