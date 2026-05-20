@@ -250,3 +250,69 @@ export const quotes = mysqlTable("quotes", {
 });
 
 export type Quote = typeof quotes.$inferSelect;
+
+// ─── Remember May 21 (Вспомни 21 мая) ─────────────────────────────────────────
+
+export const rememberMay21Users = mysqlTable("remember_may21_users", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  mentorMode: mysqlEnum("mentorMode", ["kind", "strict", "rude"]).default("kind").notNull(),
+  displayName: varchar("displayName", { length: 128 }).notNull(),
+  weeklyHoursGoal: float("weeklyHoursGoal").default(48).notNull(),
+  seasonGoal: text("seasonGoal"),
+  seasonGoalProgress: int("seasonGoalProgress").default(0),
+  studyBlockFormat: text("studyBlockFormat"),
+  currentStreak: int("currentStreak").default(0).notNull(),
+  freezesRemaining: int("freezesRemaining").default(0).notNull(),
+  lastStudyDate: timestamp("lastStudyDate"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RememberMay21User = typeof rememberMay21Users.$inferSelect;
+
+export const rememberMay21Goals = mysqlTable("remember_may21_goals", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  title: varchar("title", { length: 256 }).notNull(),
+  targetDate: timestamp("targetDate").notNull(),
+  isGrandGoal: boolean("isGrandGoal").default(false).notNull(),
+  progress: int("progress").default(0),
+  isCompleted: boolean("isCompleted").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type RememberMay21Goal = typeof rememberMay21Goals.$inferSelect;
+
+export const rememberMay21Sessions = mysqlTable("remember_may21_sessions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  sessionType: varchar("sessionType", { length: 64 }).notNull(),
+  hours: float("hours").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type RememberMay21Session = typeof rememberMay21Sessions.$inferSelect;
+
+export const rememberMay21Tasks = mysqlTable("remember_may21_tasks", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  title: varchar("title", { length: 256 }).notNull(),
+  dueDate: timestamp("dueDate"),
+  isCompleted: boolean("isCompleted").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type RememberMay21Task = typeof rememberMay21Tasks.$inferSelect;
+
+export const rememberMay21Materials = mysqlTable("remember_may21_materials", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  fileName: varchar("fileName", { length: 256 }).notNull(),
+  fileUrl: varchar("fileUrl", { length: 512 }).notNull(),
+  fileType: varchar("fileType", { length: 32 }).notNull(),
+  linkedGoalId: int("linkedGoalId"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type RememberMay21Material = typeof rememberMay21Materials.$inferSelect;

@@ -20,6 +20,7 @@ import Admin from "./pages/Admin";
 import News from "./pages/News";
 import Videos from "./pages/Videos";
 import SamuraiTimer from "./pages/SamuraiTimer";
+import RememberMay21 from "./pages/RememberMay21";
 
 function Router() {
   return (
@@ -40,6 +41,7 @@ function Router() {
         <Route path="/news" component={News} />
         <Route path="/videos" component={Videos} />
         <Route path="/timer" component={SamuraiTimer} />
+        <Route path="/remember-may-21" component={RememberMay21} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
