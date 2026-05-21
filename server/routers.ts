@@ -16,6 +16,7 @@ import { newsRouter } from "./routers/newsVideos";
 import { adminRouter } from "./routers/admin";
 import { profileRouter } from "./routers/profile";
 import { rememberMay21Router } from "./routers/rememberMay21";
+import { rememberMay21MentorRouter } from "./routers/rememberMay21Mentor";
 import { updateUserProfile } from "./db";
 
 export const appRouter = router({
@@ -44,6 +45,7 @@ export const appRouter = router({
   admin: adminRouter,
   profile: profileRouter,
   rememberMay21: rememberMay21Router,
+  rememberMay21Mentor: rememberMay21MentorRouter,
 });
 
 export type AppRouter = typeof appRouter;

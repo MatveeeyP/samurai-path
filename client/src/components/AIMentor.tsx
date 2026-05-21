@@ -3,7 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { MessageCircle, Zap, Heart, Brain } from "lucide-react";
+import { MessageCircle, Zap, Heart, Brain, Loader } from "lucide-react";
 
 interface AIMentorProps {
   mentorMode: "kind" | "strict" | "rude";
@@ -15,6 +15,17 @@ export function AIMentor({ mentorMode, currentStreak, hoursLogged }: AIMentorPro
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
   const [mentorMessage, setMentorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const getMentorMessageMutation = trpc.rememberMay21Mentor.getMentorMessage.useMutation({
+    onSuccess: (data) => {
+      setMentorMessage(typeof data.message === 'string' ? data.message : '');
+      setIsLoading(false);
+    },
+    onError: (error) => {
+      toast.error(`Ошибка: ${error.message}`);
+      setIsLoading(false);
+    },
+  });
 
   const mentorEmojis = {
     kind: "🤗",
@@ -28,43 +39,13 @@ export function AIMentor({ mentorMode, currentStreak, hoursLogged }: AIMentorPro
     rude: "Наставник без фильтра",
   };
 
-  // Generate mentor message based on action and personality
-  const generateMentorMessage = async (action: string) => {
+  const generateMentorMessage = (action: string) => {
     setIsLoading(true);
     setSelectedAction(action);
-
-    try {
-      // Simulate LLM call - in production, this would call backend
-      const messages = {
-        motivate: {
-          kind: `Ты молодец! ${currentStreak} дней подряд - это серьёзное достижение! Продолжай в том же духе, ты на правильном пути. Каждый день - это шаг к твоей мечте. 💪`,
-          strict: `${currentStreak} дней - хорошо, но не расслабляйся! Впереди ещё много работы. Завтра нужно быть ещё лучше. Давай!`,
-          rude: `${currentStreak} дней - ладно, неплохо. Но это не финиш, а только начало. Не зевай, впереди сложнее.`,
-        },
-        plan: {
-          kind: `Давай спланируем завтра вместе! Сосредоточься на самом важном. Я верю в тебя! 📋`,
-          strict: `Завтра нужно сделать ещё больше. Составь чёткий план и выполни его без отговорок.`,
-          rude: `Спланируй завтра или будешь жалеть. Никаких отговорок.`,
-        },
-        reflect: {
-          kind: `Рефлексия - это мудро! Подумай, что сегодня прошло хорошо, а что можно улучшить. Ты растёшь с каждым днём! 🌱`,
-          strict: `Анализируй каждый день. Только так ты поймёшь, что работает, а что нет.`,
-          rude: `Не просто делай, думай! Анализируй, учись на ошибках.`,
-        },
-        rest: {
-          kind: `Отдых - это тоже часть пути! Позаботься о себе, восстанови силы. Завтра ты будешь ещё сильнее! 😴`,
-          strict: `Отдыхай, но не слишком долго. Завтра снова в бой!`,
-          rude: `Спи, восстанавливайся. Завтра нужно быть на 100%.`,
-        },
-      };
-
-      const message = messages[action as keyof typeof messages]?.[mentorMode] || "Ты делаешь отлично!";
-      setMentorMessage(message);
-    } catch (error) {
-      toast.error("Ошибка при генерации сообщения");
-    } finally {
-      setIsLoading(false);
-    }
+    getMentorMessageMutation.mutate({
+      action: action as "motivate" | "plan" | "reflect" | "rest",
+      mentorMode,
+    });
   };
 
   const actions = [
@@ -82,7 +63,7 @@ export function AIMentor({ mentorMode, currentStreak, hoursLogged }: AIMentorPro
           <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", margin: 0 }}>
             {mentorNames[mentorMode]}
           </h3>
-          <p style={{ fontSize: 12, color: "#999", margin: 0 }}>Твой личный наставник</p>
+          <p style={{ fontSize: 12, color: "#999", margin: 0 }}>Твой личный наставник на основе ИИ</p>
         </div>
       </div>
 
@@ -94,9 +75,19 @@ export function AIMentor({ mentorMode, currentStreak, hoursLogged }: AIMentorPro
           borderRadius: 12,
           marginBottom: 20,
           borderLeft: "4px solid #1B6DEB",
+          minHeight: 60,
+          display: "flex",
+          alignItems: "center",
         }}>
           <p style={{ color: "#333", lineHeight: 1.6, margin: 0 }}>
-            {mentorMessage}
+            {isLoading ? (
+              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Loader size={16} style={{ animation: "spin 1s linear infinite" }} />
+                Генерирую сообщение...
+              </span>
+            ) : (
+              mentorMessage
+            )}
           </p>
         </div>
       )}
@@ -106,6 +97,7 @@ export function AIMentor({ mentorMode, currentStreak, hoursLogged }: AIMentorPro
         display: "grid",
         gridTemplateColumns: "repeat(2, 1fr)",
         gap: 12,
+        marginBottom: 20,
       }}>
         {actions.map((action) => {
           const Icon = action.icon;
@@ -123,6 +115,7 @@ export function AIMentor({ mentorMode, currentStreak, hoursLogged }: AIMentorPro
                 background: selectedAction === action.id ? "#1B6DEB" : "transparent",
                 color: selectedAction === action.id ? "#fff" : "#1B6DEB",
                 border: `2px solid ${selectedAction === action.id ? "#1B6DEB" : "#e0e0e0"}`,
+                opacity: isLoading ? 0.6 : 1,
               }}
             >
               <Icon size={16} />
@@ -150,6 +143,13 @@ export function AIMentor({ mentorMode, currentStreak, hoursLogged }: AIMentorPro
           <div style={{ fontSize: 24, fontWeight: 700, color: "#1B6DEB" }}>{hoursLogged.toFixed(1)}ч</div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </Card>
   );
 }

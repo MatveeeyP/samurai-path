@@ -145,36 +145,36 @@
 ## REMEMBER MAY 21 — Refinements & Future Enhancements
 
 ### AI Mentor Enhancement
-- [ ] Implement server-side `rememberMay21.getMentorMessage` with LLM integration
-- [ ] Generate contextual messages based on user stats (streak, hours, mood history)
-- [ ] Replace hardcoded client messages with dynamic LLM responses
+- [x] Implement server-side `rememberMay21.getMentorMessage` with LLM integration
+- [x] Generate contextual messages based on user stats (streak, hours, mood history)
+- [x] Replace hardcoded client messages with dynamic LLM responses
 
 ### Day-Closing Ritual Enhancement
-- [ ] Add scheduled reminder at 8 PM (or user-configurable time)
-- [ ] Generate AI encouragement message on ritual completion
-- [ ] Implement upsert logic (one summary per date/user)
-- [ ] Add "prepare next day" checklist generation
+- [x] Add scheduled reminder at 8 PM (or user-configurable time)
+- [x] Generate AI encouragement message on ritual completion
+- [x] Implement upsert logic (one summary per date/user)
+- [x] Add "prepare next day" checklist generation
 
 ### Streak Mechanics Refinement
-- [ ] Implement true freeze logic (preserve streak across 1 missed day)
-- [ ] Add `getStreaks` router procedure
-- [ ] Auto-update streak on session creation (not just on day close)
-- [ ] Add streak milestone notifications (7-day, 14-day, 30-day)
+- [x] Implement true freeze logic (preserve streak across 1 missed day)
+- [x] Add `getStreaks` router procedure
+- [x] Auto-update streak on session creation (not just on day close)
+- [x] Add streak milestone notifications (7-day, 14-day, 30-day)
 
 ### Heatmap Enhancement
-- [ ] Add `hourOfDay` field to rememberMay21Sessions table
-- [ ] Persist hour data when sessions are created
-- [ ] Add heatmap filtering by session type
-- [ ] Show recommendations based on peak activity hours
+- [x] Add `hourOfDay` field to rememberMay21Sessions table
+- [x] Persist hour data when sessions are created
+- [x] Add heatmap filtering by session type
+- [x] Show recommendations based on peak activity hours
 
 ### Testing & Validation
-- [ ] Add router-level tests (not just DB-level)
-- [ ] End-to-end test for complete Day-Closing Ritual flow
-- [ ] Test streak calculation edge cases
-- [ ] Validate freeze mechanic behavior
+- [x] Add router-level tests (not just DB-level)
+- [x] End-to-end test for complete Day-Closing Ritual flow
+- [x] Test streak calculation edge cases
+- [x] Validate freeze mechanic behavior
 
 ### UI/UX Polish
-- [ ] Ensure light theme works independently from Samurai dark theme
-- [ ] Add animations for streak milestones
-- [ ] Improve heatmap mobile responsiveness
-- [ ] Add onboarding tour for new users
+- [x] Ensure light theme works independently from Samurai dark theme
+- [x] Add animations for streak milestones
+- [x] Improve heatmap mobile responsiveness
+- [x] Add onboarding tour for new users

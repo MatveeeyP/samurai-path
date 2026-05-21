@@ -69,7 +69,6 @@ export function ActivityHeatmap() {
                         background: getColor(value),
                         borderRadius: 4,
                         cursor: "pointer",
-                        title: `${hour}:00 - ${value.toFixed(1)}ч`,
                       }}
                       title={`${hour}:00 - ${value.toFixed(1)}ч`}
                     />

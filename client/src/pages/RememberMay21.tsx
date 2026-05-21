@@ -13,6 +13,7 @@ import { DayClosingRitual } from "@/components/DayClosingRitual";
 import { StreakWidget } from "@/components/StreakWidget";
 import { ActivityHeatmap } from "@/components/ActivityHeatmap";
 import { AIMentor } from "@/components/AIMentor";
+import { StudyTimer } from "@/components/StudyTimer";
 
 export default function RememberMay21() {
   const { user, isAuthenticated } = useAuth();
@@ -257,29 +258,9 @@ export default function RememberMay21() {
           </TabsContent>
 
           <TabsContent value="tracker" style={{ marginTop: 20 }}>
-            <Card style={{ padding: 20, background: "#fff", borderRadius: 20, marginBottom: 16 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16, color: "#333" }}>Добавить сессию</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
-                <Input type="text" placeholder="Тип (Листочек, Веб, ДЗ...)" id="sessionType" />
-                <Input type="number" placeholder="Часы" id="sessionHours" step="0.5" />
-              </div>
-              <Button
-                onClick={() => {
-                  const type = (document.getElementById("sessionType") as HTMLInputElement).value;
-                  const hours = parseFloat((document.getElementById("sessionHours") as HTMLInputElement).value);
-                  if (type && hours > 0) {
-                    addSessionMutation.mutate({ sessionType: type, hours });
-                    (document.getElementById("sessionType") as HTMLInputElement).value = "";
-                    (document.getElementById("sessionHours") as HTMLInputElement).value = "";
-                  }
-                }}
-                style={{ width: "100%", background: "#1B6DEB" }}
-              >
-                Добавить
-              </Button>
-            </Card>
+            <StudyTimer onSessionComplete={() => sessionsQuery.refetch()} />
 
-            <Card style={{ padding: 20, background: "#fff", borderRadius: 20 }}>
+            <Card style={{ padding: 20, background: "#fff", borderRadius: 20, marginTop: 16 }}>
               <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16, color: "#333" }}>Сессии на неделе</h3>
               {(sessionsQuery.data || []).length === 0 ? (
                 <p style={{ color: "#999" }}>Пока нет сессий</p>
