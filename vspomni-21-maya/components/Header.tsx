@@ -1,4 +1,5 @@
 'use client'
+import { useState, useEffect } from 'react'
 import { useApp, levelFor, totalXP } from '@/lib/AppContext'
 
 interface HeaderProps {
@@ -9,6 +10,20 @@ export default function Header({ onSettingsClick }: HeaderProps) {
   const { cfg, streak, freezeCount, entries, solves, achGot } = useApp()
   const xp = totalXP(entries, solves, achGot, streak)
   const L = levelFor(xp)
+  const [dark, setDark] = useState(false)
+
+  useEffect(() => {
+    const saved = localStorage.getItem('v21_dark') === '1'
+    setDark(saved)
+    if (saved) document.body.classList.add('bg-dark')
+  }, [])
+
+  function toggleDark() {
+    const next = !dark
+    setDark(next)
+    localStorage.setItem('v21_dark', next ? '1' : '0')
+    document.body.classList.toggle('bg-dark', next)
+  }
 
   if (!cfg) return null
 
@@ -42,6 +57,9 @@ export default function Header({ onSettingsClick }: HeaderProps) {
             <span>{freezeCount}</span>
           </div>
         </div>
+        <button className="gear" onClick={toggleDark} title={dark ? 'Светлая тема' : 'Тёмная тема'} style={{ marginRight: 0 }}>
+          {dark ? '☀️' : '🌙'}
+        </button>
         <button className="gear" onClick={onSettingsClick} title="Настройки">⚙️</button>
       </div>
     </header>

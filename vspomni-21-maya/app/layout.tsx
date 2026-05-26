@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { AppProvider } from '@/lib/AppContext'
+import LevelUpOverlay from '@/components/LevelUpOverlay'
 
 export const metadata: Metadata = {
   title: 'Вспомни 21 мая',
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru">
       <body>
         <AppProvider>
+          <LevelUpOverlay />
           {children}
         </AppProvider>
       </body>

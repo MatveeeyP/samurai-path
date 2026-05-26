@@ -21,8 +21,11 @@ export const MODE_NAMES: Record<string, string> = {
 
 export const ACH_LIST = [
   { id: 'first', e: '🌱', t: 'Первый шаг', d: 'Записал первый час', chk: (entries: Entry[]) => entries.length > 0 },
+  { id: 'hours10', e: '⭐', t: 'Первые 10 часов', d: '10 часов учёбы', chk: (entries: Entry[]) => entries.reduce((s, e) => s + e.hrs, 0) >= 10 },
+  { id: 'hours100', e: '💎', t: '100 часов!', d: '100 часов учёбы', chk: (entries: Entry[]) => entries.reduce((s, e) => s + e.hrs, 0) >= 100 },
+  { id: 'hours500', e: '🚀', t: 'Полтысячи', d: '500 часов учёбы', chk: (entries: Entry[]) => entries.reduce((s, e) => s + e.hrs, 0) >= 500 },
   { id: 'streak3', e: '🔥', t: 'В деле', d: 'Серия 3 дня', chk: (_: Entry[], streak: number) => streak >= 3 },
-  { id: 'streak7', e: '⚡', t: 'Неделя огня', d: 'Серия 7 дней', chk: (_: Entry[], streak: number) => streak >= 7 },
+  { id: 'streak7', e: '⚡', t: 'Неделя без пропусков', d: 'Серия 7 дней подряд', chk: (_: Entry[], streak: number) => streak >= 7 },
   { id: 'streak30', e: '👑', t: 'Машина', d: 'Серия 30 дней', chk: (_: Entry[], streak: number) => streak >= 30 },
   { id: 'week48', e: '🎯', t: 'Норма взята', d: '48+ ч за неделю', chk: (entries: Entry[], _: number, cfg: Config) => weekDates().reduce((s, d) => s + entries.filter(e => e.date === d).reduce((a, e) => a + e.hrs, 0), 0) >= cfg.weekGoal },
   { id: 'pomo4', e: '🍅', t: 'Помидорный', d: '4 помидора за день', chk: (_e: Entry[], _s: number, _c: Config, pomoToday: number) => pomoToday >= 4 },

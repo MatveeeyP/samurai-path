@@ -10,6 +10,114 @@ import FloatingTimer from '@/components/FloatingTimer'
 import { PAGE_ROUTES } from '@/components/Navigation'
 import { weekTotalFor, Entry } from '@/lib/storage'
 
+const MONTHS_RU = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
+const DAY_NAMES = ['Пн', '', 'Ср', '', 'Пт', '', 'Вс']
+
+function ContribHeatmap({ entries }: { entries: Entry[] }) {
+  const dayMap: Record<string, number> = {}
+  for (const e of entries) {
+    dayMap[e.date] = (dayMap[e.date] || 0) + e.hrs
+  }
+
+  const WEEKS = 20
+  const today = new Date()
+  const todayStr = today.toISOString().slice(0, 10)
+  const currMonday = new Date(today)
+  currMonday.setDate(today.getDate() - (today.getDay() + 6) % 7)
+  const startMonday = new Date(currMonday)
+  startMonday.setDate(currMonday.getDate() - (WEEKS - 1) * 7)
+
+  // Build week-column, day-row grid
+  const grid: Array<Array<{ date: string; hrs: number; isToday: boolean; isFuture: boolean }>> = []
+  for (let w = 0; w < WEEKS; w++) {
+    const col: typeof grid[0] = []
+    for (let d = 0; d < 7; d++) {
+      const cell = new Date(startMonday)
+      cell.setDate(startMonday.getDate() + w * 7 + d)
+      const dk = cell.toISOString().slice(0, 10)
+      col.push({ date: dk, hrs: dayMap[dk] || 0, isToday: dk === todayStr, isFuture: cell > today })
+    }
+    grid.push(col)
+  }
+
+  const maxHrs = Math.max(...Object.values(dayMap), 0.1)
+
+  function cellBg(hrs: number, isFuture: boolean): string {
+    if (isFuture) return 'var(--line)'
+    if (hrs === 0) return 'var(--bg)'
+    const t = Math.min(1, hrs / maxHrs)
+    const alpha = 0.18 + 0.82 * t
+    return `rgba(27,109,235,${alpha.toFixed(2)})`
+  }
+
+  // Month labels
+  const monthLabels: string[] = []
+  let lastMonth = -1
+  for (const col of grid) {
+    const m = new Date(col[0].date).getMonth()
+    monthLabels.push(m !== lastMonth ? MONTHS_RU[m] : '')
+    lastMonth = m
+  }
+
+  const totalHrs = Object.values(dayMap).reduce((s, v) => s + v, 0)
+  const activeDays = Object.values(dayMap).filter(v => v > 0).length
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 3, marginBottom: 6 }}>
+        <div style={{ width: 22, flexShrink: 0 }} />
+        {monthLabels.map((label, i) => (
+          <div key={i} style={{ flex: 1, fontSize: 9, fontWeight: 800, color: 'var(--muted)', minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap' }}>
+            {label}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 3 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 0 }}>
+          {DAY_NAMES.map((name, d) => (
+            <div key={d} style={{ height: 14, fontSize: 9, fontWeight: 700, color: 'var(--muted)', lineHeight: '14px', width: 22 }}>
+              {name}
+            </div>
+          ))}
+        </div>
+        {grid.map((col, w) => (
+          <div key={w} style={{ display: 'flex', flexDirection: 'column', gap: 3, flex: 1 }}>
+            {col.map((cell, d) => (
+              <div
+                key={d}
+                title={cell.isFuture ? '' : `${cell.date.slice(5).replace('-', '/')} · ${cell.hrs.toFixed(1)} ч`}
+                style={{
+                  height: 14,
+                  borderRadius: 3,
+                  background: cellBg(cell.hrs, cell.isFuture),
+                  outline: cell.isToday ? '2px solid var(--blue)' : 'none',
+                  outlineOffset: '1px',
+                  cursor: cell.isFuture ? 'default' : 'default',
+                  transition: 'transform .1s',
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 16, marginTop: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+        <span style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 700 }}>
+          Меньше
+          {[0, 0.25, 0.5, 0.75, 1].map(t => (
+            <span key={t} style={{ display: 'inline-block', width: 12, height: 12, borderRadius: 3, margin: '0 2px', verticalAlign: 'middle', background: t === 0 ? 'var(--bg)' : `rgba(27,109,235,${0.18 + 0.82 * t})`, border: '1px solid var(--line)' }} />
+          ))}
+          Больше
+        </span>
+        <span style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 700 }}>
+          {activeDays} активных дней · {totalHrs.toFixed(1)} ч всего
+        </span>
+      </div>
+    </div>
+  )
+}
+
 function getWeekHours(entries: Entry[], offset: number): number {
   return weekTotalFor(entries, offset)
 }
@@ -187,6 +295,13 @@ export default function ProgressPage() {
                 <span>7 нед. назад</span>
                 <span>эта неделя</span>
               </div>
+            </div>
+
+            {/* GitHub-style Contribution Heatmap */}
+            <div className="card" style={{ marginBottom: 18 }}>
+              <h2>📅 Карта активности</h2>
+              <div className="sub">Как GitHub contributions — видишь каждый день, где работал 🟦 и где отдыхал ⬜</div>
+              <ContribHeatmap entries={entries} />
             </div>
 
             {/* Path to goal */}
