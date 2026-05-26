@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: vspomni-21-maya
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Build (static export)
         working-directory: vspomni-21-maya
