@@ -1,0 +1,14 @@
+{
+  "name": "Вспомни 21 мая",
+  "short_name": "21 мая",
+  "description": "Учебный трекер для олимпиадников",
+  "start_url": "/samurai-path/",
+  "scope": "/samurai-path/",
+  "display": "standalone",
+  "background_color": "#f4f7fc",
+  "theme_color": "#1b6deb",
+  "icons": [
+    {"src": "/samurai-path/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/samurai-path/icons/icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
