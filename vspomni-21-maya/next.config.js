@@ -2,9 +2,10 @@
 const path = require('path')
 
 const nextConfig = {
-  reactStrictMode: true,
-  // Pin the Turbopack workspace root to this project directory so Next.js
-  // doesn't walk up to a parent lockfile and mis-detect the root.
+  output: 'export',
+  basePath: '/samurai-path',
+  trailingSlash: true,
+  images: { unoptimized: true },
   turbopack: {
     root: path.resolve(__dirname),
   },
