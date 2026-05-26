@@ -36,6 +36,8 @@ export default function DashboardPage() {
   const [aiBody, setAiBody] = useState('Нажми кнопку — наставник посмотрит на твою неделю.')
   const [daySum, setDaySum] = useState<{ hrs: number; done: number; peak: string; verdict: string } | null>(null)
   const [questInput, setQuestInput] = useState('')
+  const [hiddenAutoState, setHiddenAutoState] = useState<string[]>(() => load<string[]>('v21_quest_hidden', []))
+  const [myQuestsState, setMyQuestsState] = useState<{ t: string; done: boolean }[]>(() => load<{ t: string; done: boolean }[]>('v21_quests_' + todayKey(), []))
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -143,46 +145,40 @@ export default function DashboardPage() {
   const dailyGoal = weekGoalV / 7
   const todayHours = entries.filter(e => e.date === todayKey()).reduce((s, e) => s + e.hrs, 0)
   const todaySolves = solves.filter(s => s.date === todayKey()).reduce((s, x) => s + x.count, 0)
-  const hiddenAuto = load<string[]>('v21_quest_hidden', [])
   const autoQuests = [
     { id: 'hours', t: `Позанимайся ${dailyGoal.toFixed(1)} ч сегодня`, xp: '+50 XP', done: todayHours >= dailyGoal },
     { id: 'solve', t: 'Реши 5 задач', xp: '+30 XP', done: todaySolves >= 5 },
     { id: 'pomo', t: 'Сделай 1 помидор фокуса', xp: '+20 XP', done: pomoToday >= 1 },
-  ].filter(q => !hiddenAuto.includes(q.id))
-  const myQuests = load<{ t: string; done: boolean }[]>('v21_quests_' + todayKey(), [])
+  ].filter(q => !hiddenAutoState.includes(q.id))
+  const myQuests = myQuestsState
 
   function hideAutoQuest(id: string) {
-    const h = load<string[]>('v21_quest_hidden', [])
-    if (!h.includes(id)) h.push(id)
-    save('v21_quest_hidden', h)
+    const next = [...hiddenAutoState, id].filter((v, i, a) => a.indexOf(v) === i)
+    save('v21_quest_hidden', next)
+    setHiddenAutoState(next)
     toast('Рекомендация убрана')
-    window.location.reload()
   }
 
   function addQuest() {
     if (!questInput.trim()) return
-    const k = 'v21_quests_' + todayKey()
-    const q = load<{ t: string; done: boolean }[]>(k, [])
-    q.push({ t: questInput, done: false })
-    save(k, q)
+    const next = [...myQuestsState, { t: questInput.trim(), done: false }]
+    save('v21_quests_' + todayKey(), next)
+    setMyQuestsState(next)
     setQuestInput('')
     toast('Цель добавлена')
-    window.location.reload()
   }
 
   function toggleMyQuest(i: number) {
-    const k = 'v21_quests_' + todayKey()
-    const q = load<{ t: string; done: boolean }[]>(k, [])
-    q[i].done = !q[i].done; save(k, q)
-    if (q[i].done) toast('Цель закрыта! 💪')
-    window.location.reload()
+    const next = myQuestsState.map((q, idx) => idx === i ? { ...q, done: !q.done } : q)
+    save('v21_quests_' + todayKey(), next)
+    setMyQuestsState(next)
+    if (next[i].done) toast('Цель закрыта! 💪')
   }
 
   function delMyQuest(i: number) {
-    const k = 'v21_quests_' + todayKey()
-    const q = load<{ t: string; done: boolean }[]>(k, [])
-    q.splice(i, 1); save(k, q)
-    window.location.reload()
+    const next = myQuestsState.filter((_, idx) => idx !== i)
+    save('v21_quests_' + todayKey(), next)
+    setMyQuestsState(next)
   }
 
   // Goals for tile

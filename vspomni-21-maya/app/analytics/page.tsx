@@ -24,6 +24,7 @@ export default function AnalyticsPage() {
   const [tplName, setTplName] = useState('')
   const [hoursNeeded, setHoursNeeded] = useState('')
   const [deadline, setDeadline] = useState('')
+  const [templates, setTemplates] = useState<Template[]>(() => load<Template[]>('v21_tpls', []))
 
   function navTo(page: string) {
     if (page === 'analytics') return
@@ -58,7 +59,6 @@ export default function AnalyticsPage() {
   }, [hoursNeeded, deadline])
 
   // Templates
-  const templates = load<Template[]>('v21_tpls', [])
 
   function saveTemplate() {
     const name = tplName.trim()
@@ -73,9 +73,9 @@ export default function AnalyticsPage() {
       tasks: currentTasks.map(t => ({ txt: t.txt, big: t.big })),
       savedAt: todayKey(),
     }
-    const existing = load<Template[]>('v21_tpls', [])
-    const updated = [tpl, ...existing.filter(t => t.name !== name)]
+    const updated = [tpl, ...templates.filter(t => t.name !== name)]
     save('v21_tpls', updated)
+    setTemplates(updated)
     setTplName('')
     toast(`Шаблон "${name}" сохранён (${tpl.tasks.length} задач)`)
   }
@@ -91,9 +91,8 @@ export default function AnalyticsPage() {
   function deleteTemplate(name: string) {
     const updated = templates.filter(t => t.name !== name)
     save('v21_tpls', updated)
+    setTemplates(updated)
     toast('Шаблон удалён')
-    // force re-render
-    window.location.reload()
   }
 
   if (!cfg) return null
